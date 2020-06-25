@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lets_chat/models/user_data.dart';
 import 'package:lets_chat/screens/home_screen.dart';
 import 'package:lets_chat/screens/welcome_screen.dart';
-import 'package:lets_chat/services/auth_services.dart';
+import 'package:lets_chat/services/auth_service.dart';
+import 'package:lets_chat/services/db_service.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(
@@ -14,6 +15,9 @@ void main() => runApp(
           ),
           ChangeNotifierProvider<UserData>(
             create: (_) => UserData(),
+          ),
+          Provider<DatabaseService>(
+            create: (_) => DatabaseService(),
           ),
         ],
         child: MyApp(),

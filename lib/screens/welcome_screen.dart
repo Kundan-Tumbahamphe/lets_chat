@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lets_chat/services/auth_services.dart';
+import 'package:lets_chat/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -74,6 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         validator: (input) =>
             input.length < 6 ? 'Password length must be 6 characters' : null,
         onSaved: (input) => _password = input,
+        obscureText: true,
       ),
     );
   }
