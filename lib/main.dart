@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_chat/models/user_data.dart';
 import 'package:lets_chat/screens/home_screen.dart';
-import 'package:lets_chat/screens/login_screen.dart';
+import 'package:lets_chat/screens/welcome_screen.dart';
 import 'package:lets_chat/services/auth_services.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Let\'s Chat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.white,
+        primaryColor: Color.fromRGBO(36, 117, 176, 1),
       ),
       home: StreamBuilder<FirebaseUser>(
         stream: Provider.of<AuthService>(context, listen: false).user,
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
                 snapshot.data.uid;
             return HomeScreen();
           } else {
-            return LoginScreen();
+            return WelcomeScreen();
           }
         },
       ),
