@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: 'Let\'s Chat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(36, 117, 176, 1),
+        primaryColor: Color.fromRGBO(48, 51, 107, 1),
       ),
       home: StreamBuilder<FirebaseUser>(
         stream: Provider.of<AuthService>(context, listen: false).user,

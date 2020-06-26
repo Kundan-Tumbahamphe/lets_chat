@@ -59,7 +59,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
               if (input.trim().isNotEmpty) {
                 List<User> users =
                     await Provider.of<DatabaseService>(context, listen: false)
-                        .searchUsers(input, currentUserId);
+                        .searchUsers(name: input, userId: currentUserId);
 
                 _selectedUsers.forEach((user) => users.remove(user));
 
