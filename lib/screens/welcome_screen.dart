@@ -46,7 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         decoration: const InputDecoration(labelText: 'Name'),
         validator: (input) =>
             input.trim().isEmpty ? 'Please enter a valid name' : null,
-        onSaved: (input) => _name = input.trim(),
+        onSaved: (input) => _name = input,
       ),
     );
   }

@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_chat/models/chat_model.dart';
 import 'package:lets_chat/models/message_mode.dart';
 import 'package:lets_chat/models/user_model.dart';
-import 'package:lets_chat/services/storage_service.dart';
 import 'package:lets_chat/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -28,20 +25,12 @@ class DatabaseService {
   }
 
   Future<User> _getUser(String userId) async {
-    //made private
     DocumentSnapshot userDoc = await usersRef.document(userId).get();
     return User.fromDoc(userDoc);
   }
 
   Future<bool> createChat(
-      {BuildContext context,
-      String name,
-      File file,
-      List<String> usersIds}) async {
-    String imageUrl = await Provider.of<StorageService>(context, listen: false)
-        .uploadChatImageAndGetDownloadUrl(
-            imageFile: file, url: null); //fix this, don't rely on provider
-
+      {String name, String imageUrl, List<String> usersIds}) async {
     List<dynamic> memberIds = [];
     Map<String, dynamic> memberInfo = {};
     Map<String, dynamic> readStatus = {};
@@ -86,6 +75,8 @@ class DatabaseService {
   void setChatRead({BuildContext context, Chat chat, bool read}) {
     String currentUserId = Provider.of<UserData>(context)
         .currentUserID; //fix this, don't rely on provider
-    chatsRef.document(chat.id).updateData({'readStatus.$currentUserId': read});
+    chatsRef
+        .document(chat.id)
+        .updateData({'readStatus.$currentUserId': read}); //error prone?
   }
 }

@@ -12,7 +12,7 @@ class Chat extends Equatable {
   final dynamic memberInfo;
   final dynamic readStatus;
 
-  const Chat(
+  Chat(
       {this.id,
       this.name,
       this.imageUrl,

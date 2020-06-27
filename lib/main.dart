@@ -5,6 +5,7 @@ import 'package:lets_chat/screens/home_screen.dart';
 import 'package:lets_chat/screens/welcome_screen.dart';
 import 'package:lets_chat/services/auth_service.dart';
 import 'package:lets_chat/services/db_service.dart';
+import 'package:lets_chat/services/storage_service.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(
@@ -19,6 +20,9 @@ void main() => runApp(
           Provider<DatabaseService>(
             create: (_) => DatabaseService(),
           ),
+          Provider<StorageService>(
+            create: (_) => StorageService(),
+          )
         ],
         child: MyApp(),
       ),

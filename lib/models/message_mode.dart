@@ -7,8 +7,7 @@ class Message {
   final String imageUrl;
   final Timestamp timestamp;
 
-  const Message(
-      {this.id, this.senderId, this.text, this.imageUrl, this.timestamp});
+  Message({this.id, this.senderId, this.text, this.imageUrl, this.timestamp});
 
   factory Message.fromDoc(DocumentSnapshot doc) {
     return Message(

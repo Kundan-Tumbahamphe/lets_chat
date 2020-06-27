@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_chat/models/user_data.dart';
+import 'package:lets_chat/screens/create_chat_screen.dart';
 import 'package:lets_chat/services/db_service.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,14 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
         title: Text('Search users'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (_selectedUsers.length > 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CreateChatScreen(_selectedUsers)));
+              }
+            },
             icon: Icon(Icons.add),
           ),
         ],
