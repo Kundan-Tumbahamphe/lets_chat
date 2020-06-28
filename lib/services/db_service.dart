@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:lets_chat/models/chat_model.dart';
-import 'package:lets_chat/models/message_mode.dart';
+import 'package:lets_chat/models/message_model.dart';
 import 'package:lets_chat/models/user_model.dart';
 import 'package:lets_chat/utilities/constants.dart';
-import 'package:provider/provider.dart';
-
-import '../models/user_data.dart';
 
 class DatabaseService {
   Future<List<User>> searchUsers({String name, String userId}) async {
@@ -72,11 +68,7 @@ class DatabaseService {
     });
   }
 
-  void setChatRead({BuildContext context, Chat chat, bool read}) {
-    String currentUserId = Provider.of<UserData>(context)
-        .currentUserID; //fix this, don't rely on provider
-    chatsRef
-        .document(chat.id)
-        .updateData({'readStatus.$currentUserId': read}); //error prone?
+  void setChatRead({String userId, Chat chat, bool read}) {
+    chatsRef.document(chat.id).updateData({'readStatus.$userId': read});
   }
 }

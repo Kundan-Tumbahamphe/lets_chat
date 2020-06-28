@@ -133,6 +133,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   fontSize: 32.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               const SizedBox(height: 40.0),
@@ -149,19 +150,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         });
                       },
                       shape: RoundedRectangleBorder(
+                        side: _selectedIndex == 0
+                            ? BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 2.50)
+                            : BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      color: _selectedIndex == 0
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey[300],
+                      color: Colors.grey[300],
                       child: Text(
                         'Login',
                         style: TextStyle(
                           fontSize: 18.0,
                           letterSpacing: 0.8,
-                          color: _selectedIndex == 0
-                              ? Colors.white
-                              : Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),
@@ -176,19 +178,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         });
                       },
                       shape: RoundedRectangleBorder(
+                        side: _selectedIndex == 1
+                            ? BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 2.50)
+                            : BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      color: _selectedIndex == 1
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey[300],
+                      color: Colors.grey[300],
                       child: Text(
                         'Register',
                         style: TextStyle(
                           fontSize: 18.0,
                           letterSpacing: 0.8,
-                          color: _selectedIndex == 1
-                              ? Colors.white
-                              : Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),
@@ -206,7 +209,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  color: Colors.black,
+                  color: Theme.of(context).primaryColor,
                   child: Text(
                     'Submit',
                     style: TextStyle(

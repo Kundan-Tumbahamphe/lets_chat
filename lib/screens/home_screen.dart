@@ -7,6 +7,8 @@ import 'package:lets_chat/services/auth_service.dart';
 import 'package:lets_chat/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
+import 'chat_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -15,9 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   _buildChat(Chat chat, String currentUserId) {
     final bool isRead = chat.readStatus[currentUserId];
-    final TextStyle readStyle = TextStyle(
-      fontWeight: isRead ? FontWeight.w400 : FontWeight.bold,
-    );
 
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -26,33 +25,73 @@ class _HomeScreenState extends State<HomeScreen> {
         radius: 28.0,
         backgroundImage: CachedNetworkImageProvider(chat.imageUrl),
       ),
-      title: Text(
-        chat.name,
-        overflow: TextOverflow.ellipsis,
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text(
+          chat.name,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.5,
+              color: Theme.of(context).primaryColor),
+        ),
       ),
       subtitle: chat.recentSender == ' '
           ? Text(
               'Chat Created',
               overflow: TextOverflow.ellipsis,
-              style: readStyle,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
             )
           : chat.recentMessage != null //error prone?
               ? Text(
                   '${chat.memberInfo[chat.recentSender]['name']}: ${chat.recentMessage}',
                   overflow: TextOverflow.ellipsis,
-                  style: readStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
                 )
               : Text(
                   '${chat.memberInfo[chat.recentSender]['name']} sent an image',
                   overflow: TextOverflow.ellipsis,
-                  style: readStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-      trailing: Text(
-        timeFormat.format(chat.recentTimestamp.toDate()),
-        style: readStyle,
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              timeFormat.format(chat.recentTimestamp.toDate()),
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ),
+          isRead
+              ? Text('')
+              : Container(
+                  alignment: Alignment.center,
+                  height: 20.0,
+                  width: 40.0,
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(48, 51, 107, 0.8),
+                      borderRadius: BorderRadius.circular(20.0)),
+                  child: Text(
+                    'NEW',
+                    style: TextStyle(
+                      fontSize: 11.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+        ],
       ),
-//      onTap: () => Navigator.push(
-//          context, MaterialPageRoute(builder: (_) => ChatScreen(chat))),
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (_) => ChatScreen(chat))),
     );
   }
 
@@ -79,14 +118,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder(
-        //old state error
+        //old state error (doesn't extract old data when app is re-installed)
         stream: chatsRef
             .where('memberIds', arrayContains: currentUserId)
             .orderBy('recentTimestamp', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return Center(//what about newly created users
+            return Center(
+                //what about newly created users
 //              child: CircularProgressIndicator(),
                 );
           }
