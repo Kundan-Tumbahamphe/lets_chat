@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_chat/models/chat_model.dart';
 import 'package:lets_chat/models/user_data.dart';
@@ -15,11 +17,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _firebaseMessaging.configure(
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume: $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch: $message');
+      },
+    );
+
+    Provider.of<AuthService>(context, listen: false).updateToken();
+  }
+
   _buildChat(Chat chat, String currentUserId) {
     final bool isRead = chat.readStatus[currentUserId];
 
     return ListTile(
-      contentPadding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+      contentPadding: const EdgeInsets.only(left: 20.0, right: 20.0),
       leading: CircleAvatar(
         backgroundColor: Colors.grey[300],
         radius: 28.0,
@@ -44,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w500,
               ),
             )
-          : chat.recentMessage != null //error prone?
+          : chat.recentMessage != null
               ? Text(
                   '${chat.memberInfo[chat.recentSender]['name']}: ${chat.recentMessage}',
                   overflow: TextOverflow.ellipsis,
@@ -118,23 +138,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder(
-        //old state error (doesn't extract old data when app is re-installed)
-        stream: chatsRef
+        stream: Firestore.instance
+            .collection('chats')
             .where('memberIds', arrayContains: currentUserId)
             .orderBy('recentTimestamp', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-                //what about newly created users
-//              child: CircularProgressIndicator(),
-                );
+            return Center();
           }
 
           return ListView.separated(
             itemCount: snapshot.data.documents.length,
             separatorBuilder: (BuildContext context, int index) {
-              return const Divider(thickness: 1.0);
+              return const Divider(thickness: 2.0);
             },
             itemBuilder: (BuildContext context, int index) {
               Chat chat = Chat.fromDoc(snapshot.data.documents[index]);

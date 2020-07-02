@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       ),
       home: StreamBuilder<FirebaseUser>(
         stream: Provider.of<AuthService>(context, listen: false).user,
-        builder: (_, AsyncSnapshot snapshot) {
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Provider.of<UserData>(context, listen: false).currentUserID =
                 snapshot.data.uid;
